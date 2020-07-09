@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="./main.css" />
+  <title>Buscador de series</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600;700&family=Rubik:wght@300;500;700&display=swap"
+    rel="stylesheet" />
+
+
+</head>
+
+<body>
+  <div>
+    <h1 class="title">Buscador de Series</h1>
+    <input type="text" class="js-input" placeholder="Nombre de la serie...">
+    <button class="js-button button">Buscar</button>
+    <section class="mainview">
+
+      <section class=favoriteSection>
+        <h2>Mis series favoritas</h2>
+        <ul class="js-ul-favorites"></ul>
+
+      </section>
+
+      <section class=resultSection>
+        <h2>Resultado de mi búsqueda</h2>
+        <p class="js-resultSection-p"> Aún no has realizado ninguna búsqueda.</p>
+        <ul class="js-ul-result ul-result"></ul>
+
+      </section>
+    </section>
+  </div>
+  <script type="text/javascript" src="./main.js"></script>
+</body>
+
+</html>

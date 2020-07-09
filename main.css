@@ -1,0 +1,51 @@
+* {
+  font-family: 'Open Sans', sans-serif;
+  list-style: none;
+}
+
+.mainview {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+h2 {
+  margin-top: 0px;
+}
+
+.favoriteSection {
+  width: 30%;
+  height: 100vw;
+  padding: 20px;
+  background-color: lightsteelblue;
+  border-radius: 12px;
+}
+.resultSection {
+  width: 60%;
+  height: 100vw;
+  padding: 20px;
+  background-color: lightyellow;
+  border-radius: 12px;
+}
+.serie {
+  border: 1px solid black;
+  border-radius: 12px;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.favorite {
+  background-color: greenyellow;
+}
+
+.button {
+  color: white;
+  background-color: cadetblue;
+  border-radius: 12px;
+  font-weight: bold;
+  padding: 5px;
+}
+.hidden {
+  display: none;
+}
