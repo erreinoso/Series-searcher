@@ -55,10 +55,11 @@ h2 {
   font-weight: bold;
   padding: 5px;
 }
-.hidden {
-  display: none;
-}
 
 img {
   height: 150px;
+}
+
+.hidden {
+  display: none;
 }

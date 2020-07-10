@@ -59,6 +59,7 @@ function favouritesHandler(ev) {
   addToFavouritesArray(ev);
   addToFavouritesSection(ev);
   saveIntoLocal();
+  updateLocalStorage();
 }
 
 function addToFavouritesArray(ev) {
@@ -101,19 +102,23 @@ function addToFavouritesSection() {
     } else {
       imagecard = favouriteSeries[i].show.image.medium;
     }
-    seriesfav += `<li class="seriefavcard" id="${favouriteSeries[i].show.id}"><img src="${imagecard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
+    seriesfav =
+      seriesfav +
+      `<li class="seriefavcard" id="${favouriteSeries[i].show.id}"><img src="${imagecard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
     seriesfav += `<h3>${favouriteSeries[i].show.name}</h3>`;
     seriesfav += `<button type="input" class="js-reset"> 🗑️ </button></li>`;
   }
   favsection.innerHTML =
     seriesfav +
     `<button type="input" class="js-reset-all"> 🗑️Eliminar todos🗑️ </button></li>`;
+  // updateLocalStorage();
 }
 
 // *************************  FUNCIONES PARA RESETEAR ********************************
 
 function resetOneFav() {
   favouriteSeries.splice(favElemIndex, 1);
+  updateLocalStorage();
 }
 
 const resetAll = document.querySelector('.js-reset-all');
@@ -126,11 +131,18 @@ function resetFavourites() {
   console.log(favouriteSeries);
 }
 
-// *************************  GUARDAR EN LOCAL ********************************
+// *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
 function saveIntoLocal() {
   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
 }
 //FALTA TRAER DEL LOCAL
+
+const getFromLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('favouriteSeries'));
+  if (data !== null) {
+    favouriteSeries = data;
+  }
+};
 
 // *************************  LISTENERS ********************************
 
@@ -150,6 +162,14 @@ function addListenersReset() {
   }
 }
 
+// *************************  RESET *******************************
+
 btn.addEventListener('click', getSeries);
 
 resetAll.addEventListener('click', resetFavourites);
+
+// *************************  START APP ********************************
+
+getSeries();
+getFromLocalStorage();
+addToFavouritesSection();
