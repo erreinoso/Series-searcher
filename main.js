@@ -1,18 +1,18 @@
 'use strict';
 
-//constantes que vamos a utilizar
+//👉constantes que vamos a utilizar
 const input = document.querySelector('.js-input');
 const btn = document.querySelector('.js-button');
 const resultsectionp = document.querySelector('.js-resultSection-p');
 const resultsection = document.querySelector('.js-ul-result');
 const favsection = document.querySelector('.js-ul-fav');
+
 const imgTemporary = 'https://via.placeholder.com/210x295/ffffff/666666/';
 let seriesresult = [];
 let favouriteSeries = [];
 
-//👉 traigo los datos del API
+//👉************************ TRAIGO INFORMACIÓN DE LA API *************
 function getSeries() {
-  //esta función trae datos de la API
   let searchinput = input.value;
   fetch(`http://api.tvmaze.com/search/shows?q=${searchinput}`)
     .then((response) => response.json())
@@ -23,8 +23,7 @@ function getSeries() {
     });
 }
 
-//👉 pinto los datos de la busqueda
-
+//👉*************************  PINTO RESULTADO DE LA BUSQUEDA *************
 function renderSearch() {
   resultsectionp.classList.add('hidden');
   //seriesalreadysearched.push(seriesresult); // añado a la lista de buscados
@@ -46,13 +45,7 @@ function renderSearch() {
   }
 }
 
-// 👉  Creamos una funcion para que me escuchen las tarjetas al hacer click
-function addListeners() {
-  let liElem = document.querySelectorAll('.seriecard');
-  for (const li of liElem) {
-    li.addEventListener('click', favouritesHandler);
-  }
-}
+//👉*************************  AÑADIR SERIES A SU ARRAY *************
 
 //👉 cuando hago clic sobre la tarjeta,
 // // -añadir a array favouriteSeries         addToFavouritesArray
@@ -65,7 +58,7 @@ function favouritesHandler(ev) {
   console.log('elemento clicado', ev.currentTarget);
   addToFavouritesArray(ev);
   addToFavouritesSection(ev);
-  // saveIntoLocal();
+  saveIntoLocal();
 }
 
 function addToFavouritesArray(ev) {
@@ -96,7 +89,7 @@ function addToFavouritesArray(ev) {
   }
 }
 
-//👉
+//👉*************************  AÑADIR FAVORITOS A SU SECCIÓN. PINTAR **************************
 function addToFavouritesSection() {
   let seriesfav;
   let i;
@@ -109,38 +102,54 @@ function addToFavouritesSection() {
       imagecard = favouriteSeries[i].show.image.medium;
     }
     seriesfav += `<li class="seriefavcard" id="${favouriteSeries[i].show.id}"><img src="${imagecard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
-    seriesfav += `<h3>${favouriteSeries[i].show.name}</h3></li>`;
+    seriesfav += `<h3>${favouriteSeries[i].show.name}</h3>`;
+    seriesfav += `<button type="input" class="js-reset"> 🗑️ </button></li>`;
   }
-  favsection.innerHTML = seriesfav;
+  favsection.innerHTML =
+    seriesfav +
+    `<button type="input" class="js-reset-all"> 🗑️Eliminar todos🗑️ </button></li>`;
 }
 
-// Listeners
+// *************************  FUNCIONES PARA RESETEAR ********************************
+
+function resetOneFav() {
+  favouriteSeries.splice(favElemIndex, 1);
+}
+
+const resetAll = document.querySelector('.js-reset-all');
+
+function resetFavourites() {
+  favouriteSeries = [];
+  addToFavouritesSection();
+  saveIntoLocal();
+  // favsection.innerHTML = '';
+  console.log(favouriteSeries);
+}
+
+// *************************  GUARDAR EN LOCAL ********************************
+function saveIntoLocal() {
+  localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
+}
+//FALTA TRAER DEL LOCAL
+
+// *************************  LISTENERS ********************************
+
+// 👉  Creamos una funcion para que me escuchen las tarjetas al hacer click
+
+function addListeners() {
+  let liElem = document.querySelectorAll('.seriecard');
+  for (const li of liElem) {
+    li.addEventListener('click', favouritesHandler);
+  }
+}
+
+function addListenersReset() {
+  let resetElem = document.querySelectorAll('.js-reset');
+  for (const reset of resetElem) {
+    reset.addEventListener('click', resetOneFav);
+  }
+}
+
 btn.addEventListener('click', getSeries);
 
-//👉Local storage
-// function saveIntoLocal() {
-//   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
-// }
-
-//👉 function addToFavouritesArray(ev) {
-//   const clickedcard = ev.currentTarget;
-//   favouriteSeries.push(seriesresult);
-//   console.log('elemento clickado', ev.currentTarget);
-//   console.log('el array de favoritos', favouriteSeries);
-// } ESTO FUNCIONA PERO NO SERÍA LO MÁS LICITO?
-
-// 👉function addToFavouritesArray(ev) {
-//   const clickedcard = ev.currentTarget; //Esto funciona porque el resultado es solo 1
-//   favouriteSeries.push(seriesresult);
-//   funcionaba
-// if (favElemIndex === -1) {
-//   ev.currentTarget.classList.add('favelement');
-//   const favElemnt = seriesresult.find(
-//     (serie) => serie.show.name === clickedcard.name
-//   );
-//   favouriteSeries.push(favElemnt);
-//   console.log('elemento favorito', favElemnt);
-// } else {
-//   console.log('ya estoy');
-// }
-// }
+resetAll.addEventListener('click', resetFavourites);
