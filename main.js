@@ -8,7 +8,7 @@ const resultsection = document.querySelector('.js-ul-result');
 const favsection = document.querySelector('.js-ul-fav');
 const imgTemporary = 'https://via.placeholder.com/210x295/ffffff/666666/';
 let seriesresult = [];
-let favouriteseries = [];
+let favouriteSeries = [];
 
 //👉 traigo los datos del API
 function getSeries() {
@@ -32,7 +32,7 @@ function renderSearch() {
   resultsection.innerHTML = '';
   let i;
   let imagecard;
-  console.log(seriesresult[0].show.image.medium);
+
   for (i = 0; i < seriesresult.length; i++) {
     if (seriesresult[i].show.image === null) {
       imagecard = imgTemporary; //revisar esta parte
@@ -55,7 +55,7 @@ function addListeners() {
 }
 
 //👉 cuando hago clic sobre la tarjeta,
-// // -añadir a array favouriteseries         addToFavouritesArray
+// // -añadir a array favouriteSeries         addToFavouritesArray
 // // -pintar dicho array en la sección     addToFavouritesSection
 // // - intercambiar color fuente y fondo          changeColor
 // // - guardar en local
@@ -64,8 +64,7 @@ function favouritesHandler(ev) {
   const clickedcard = ev.currentTarget;
   console.log('elemento clicado', ev.currentTarget);
   addToFavouritesArray(ev);
-  // addToFavouritesSection(ev);
-  // changeColor(ev);
+  addToFavouritesSection(ev);
   // saveIntoLocal();
 }
 
@@ -73,12 +72,12 @@ function addToFavouritesArray(ev) {
   //console.log('series result', seriesresult);
   const clickedcard = ev.currentTarget;
   const clickedcardname = clickedcard.querySelector('h3').innerHTML;
-  console.log('array de favoritos', favouriteseries);
+  console.log('array de favoritos', favouriteSeries);
   //console.log('ev.currentTarget', clickedcard);
   console.log('el id del clickedcard', clickedcard.id);
 
   //si hay algun elemento cuyo id sea igual que el del elemento clickado, devuelveme su index
-  const favElemIndex = favouriteseries.findIndex(
+  const favElemIndex = favouriteSeries.findIndex(
     (elem) => elem.show.name === clickedcardname
   );
   console.log(favElemIndex);
@@ -89,72 +88,57 @@ function addToFavouritesArray(ev) {
     const favElemnt = seriesresult.find(
       (serie) => serie.show.name === clickedcardname
     );
-    favouriteseries.push(favElemnt);
+    favouriteSeries.push(favElemnt);
     console.log('elemento favorito', favElemnt);
   } else {
     clickedcard.classList.remove('favelement');
-    favouriteseries.splice(favElemIndex, 1);
+    favouriteSeries.splice(favElemIndex, 1);
   }
 }
 
-/*
-  for (const fav of favouriteseries) {
-    if (clickedcard.id !== fav.show.id) {
-      console.log('aun no está dentro');
+//👉
+function addToFavouritesSection() {
+  let seriesfav;
+  let i;
+  let imagecard;
+
+  for (i = 0; i < favouriteSeries.length; i++) {
+    if (favouriteSeries[i].show.image === null) {
+      imagecard = imgTemporary; //revisar esta parte
     } else {
-      console.log('hola?');
+      imagecard = favouriteSeries[i].show.image.medium;
     }
-  }*/
-//   favouriteseries.push(seriesresult);
-//   console.log('elemento clickado', ev.currentTarget);
-//   console.log('el array de favoritos', favouriteseries);
-
-// console.log('los favoritos son', favouriteseries);
-// }
-
-//👉 function addToFavouritesSection() {
-//   let seriesfav;
-//   // if (seriesresult[i].show.image === null) {
-//   //   imagecard = imgTemporary; //revisar esta parte
-//   // } else {
-//   //   imagecard = seriesresult[i].show.image.medium;
-//   // }
-//   for (const serie of favouriteseries) {
-//     seriesfav += `<li class="seriefavcard" id="${serie.show.id}"><img src="${imagecard}" alt="Foto de ${serie.show.name}">`;
-//     seriesfav += `<h3>${serie.show.name}</h3></li>`;
-//     favsection.innerHTML = seriesfav;
-//   }
-// }
-
-//👉 function changeColor(ev) {
-//   ev.currentTarget.classList.toggle('favelement');
-// }
+    seriesfav += `<li class="seriefavcard" id="${favouriteSeries[i].show.id}"><img src="${imagecard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
+    seriesfav += `<h3>${favouriteSeries[i].show.name}</h3></li>`;
+  }
+  favsection.innerHTML = seriesfav;
+}
 
 // Listeners
 btn.addEventListener('click', getSeries);
 
 //👉Local storage
 // function saveIntoLocal() {
-//   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteseries));
+//   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
 // }
 
 //👉 function addToFavouritesArray(ev) {
 //   const clickedcard = ev.currentTarget;
-//   favouriteseries.push(seriesresult);
+//   favouriteSeries.push(seriesresult);
 //   console.log('elemento clickado', ev.currentTarget);
-//   console.log('el array de favoritos', favouriteseries);
+//   console.log('el array de favoritos', favouriteSeries);
 // } ESTO FUNCIONA PERO NO SERÍA LO MÁS LICITO?
 
 // 👉function addToFavouritesArray(ev) {
 //   const clickedcard = ev.currentTarget; //Esto funciona porque el resultado es solo 1
-//   favouriteseries.push(seriesresult);
+//   favouriteSeries.push(seriesresult);
 //   funcionaba
 // if (favElemIndex === -1) {
 //   ev.currentTarget.classList.add('favelement');
 //   const favElemnt = seriesresult.find(
 //     (serie) => serie.show.name === clickedcard.name
 //   );
-//   favouriteseries.push(favElemnt);
+//   favouriteSeries.push(favElemnt);
 //   console.log('elemento favorito', favElemnt);
 // } else {
 //   console.log('ya estoy');
