@@ -14,26 +14,32 @@
 </head>
 
 <body>
-  <div>
-    <h1 class="title">Buscador de Series</h1>
-    <input type="text" class="js-input" placeholder="Nombre de la serie...">
-    <button class="js-button button">Buscar</button>
+  <div class='frame'>
+    <div class='header'>
+      <h1 class='title'>Buscador de Series</h1>
+      <div class='search'><input type="text" class="js-input" placeholder="Nombre de la serie...">
+        <button class="js-button button">Buscar</button>
+      </div>
+    </div>
     <section class="mainview">
-
       <section class=favoriteSection>
-        <h2>Mis series favoritas</h2>
+        <div class='subtitle'>
+          <h2>Mis series favoritas</h2>
+          <button type="input" class="js-reset-all button-reset-all hidden"> 🗑️ Vaciar </button>
+        </div>
         <ul class="js-ul-fav"></ul>
-        <button type="input" class="js-reset-all hidden"> 🗑️Eliminar todos🗑️ </button>
+
       </section>
 
       <section class=resultSection>
         <h2>Resultado de mi búsqueda</h2>
-        <p class="js-resultSection-p"> Aún no has realizado ninguna búsqueda.</p>
+        <!-- <p class="js-resultSection-p"> Aún no has realizado ninguna búsqueda.</p> -->
         <ul class="js-ul-result ul-result"></ul>
 
       </section>
     </section>
   </div>
+  <div class='line'> </div>
   <script type="text/javascript" src="./main.js"></script>
 </body>
 

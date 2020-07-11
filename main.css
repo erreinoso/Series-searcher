@@ -3,43 +3,95 @@
   list-style: none;
 }
 
+.frame {
+  border-radius: 20px;
+  border: 15px solid grey;
+  margin: 50px;
+  width: 90%;
+  height: 500px;
+}
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.title {
+  display: inline-block;
+}
+
+.search {
+  margin-right: 20px;
+}
+input {
+  height: 30px;
+  width: 400px;
+}
+.line {
+  border: 7px solid grey;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45%;
+}
+
 .mainview {
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
 }
+.favoriteSection {
+  width: 30%;
+  height: 17vw;
+  padding: 20px;
+  border: 2px double lightsteelblue;
+  border-radius: 12px;
+  margin: 20px;
+  overflow-y: auto;
+}
+.subtitle {
+  display: flex;
+  justify-content: space-between;
+}
+.resultSection {
+  width: 60%;
+  height: 17vw;
+  padding: 20px;
+  border: 2px dotted lightsteelblue;
+  border-radius: 12px;
+  margin: 20px;
+  overflow-y: auto;
+}
 h2 {
   margin-top: 0px;
 }
 
-.favoriteSection {
-  width: 30%;
-  height: 100vw;
-  padding: 20px;
-  background-color: lightsteelblue;
-  border-radius: 12px;
+h3 {
+  margin-top: 5px;
+  font-size: 12px;
 }
-.resultSection {
-  width: 60%;
-  height: 100vw;
-  padding: 20px;
-  background-color: lightgreen;
-  border-radius: 12px;
+
+ul {
+  display: flex;
 }
-.js-serieCard,
-.js-serieFavCard {
-  border: 1px solid black;
+
+.serieCard,
+.serieFavCard {
   border-radius: 12px;
   display: inline-block;
   justify-content: center;
   align-items: center;
   align-content: center;
   padding: 10px;
-  background-color: rgb(243, 199, 199);
+  background-color: rgb(238, 208, 208);
+  margin: 7px;
+  width: 100px;
 }
 
-.favourite {
-  background-color: greenyellow;
+.serieCard {
+  height: 130px;
+}
+
+.serieFavCard {
+  height: auto;
 }
 
 .favelement {
@@ -51,14 +103,15 @@ h2 {
 
 .button {
   color: white;
-  background-color: cadetblue;
+  background-color: rgb(37, 136, 153);
   border-radius: 12px;
   font-weight: bold;
   padding: 5px;
+  width: 100px;
 }
 
 img {
-  height: 150px;
+  height: 70px;
   border-radius: 12px;
   align-self: center;
 }
@@ -69,4 +122,14 @@ img {
 
 .resetButton {
   padding: 5px;
+  border-radius: 20px;
+  border-color: white;
+  background-color: white;
+}
+
+.button-reset-all {
+  border-radius: 20px;
+  border-color: lightgray;
+  background-color: white;
+  height: 40px;
 }

@@ -19,14 +19,14 @@ function getSeries() {
     .then((response) => response.json())
     .then((data) => {
       seriesResult = data;
-      renderSearch();
+      renderSearch(); //no entiendo porqué hay que ponerlo y no funciona con el listener
       addListeners();
     });
 }
 
 //👉*************************  PINTO RESULTADO DE LA BUSQUEDA *************
 function renderSearch() {
-  resultSectionP.classList.add('hidden');
+  // resultSectionP.classList.add('hidden'); funciona antes de tiempo
   let seriesCard;
   resultSection.innerHTML = '';
   let i;
@@ -38,7 +38,7 @@ function renderSearch() {
     } else {
       imageCard = seriesResult[i].show.image.medium;
     }
-    seriesCard = `<li class="js-serieCard" id="${seriesResult[i].show.id}">`;
+    seriesCard = `<li class="js-serieCard serieCard" id="${seriesResult[i].show.id}">`;
     seriesCard += `<img src="${imageCard}" alt="Foto de ${seriesResult[i].show.name}">`;
     seriesCard += `<h3>${seriesResult[i].show.name}</h3></li>`;
     resultSection.innerHTML += seriesCard;
@@ -98,7 +98,7 @@ function renderFavouritesSection() {
     } else {
       favCard = favouriteSeries[i].show.image.medium;
     }
-    seriesFav += `<li class="js-serieFavCard" id="${favouriteSeries[i].show.id}">`;
+    seriesFav += `<li class="js-serieFavCard serieFavCard" id="${favouriteSeries[i].show.id}">`;
     seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
     seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
     seriesFav += `<button type="button" class="js-delete resetButton"> ❌ </button></li>`;
