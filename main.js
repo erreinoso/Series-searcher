@@ -6,7 +6,8 @@ const btn = document.querySelector('.js-button');
 const resultSectionP = document.querySelector('.js-resultSection-p');
 const resultSection = document.querySelector('.js-ul-result');
 const favSection = document.querySelector('.js-ul-fav');
-let resetElem = document.querySelectorAll('.js-reset');
+const btnReset = document.querySelector('.js-reset-all');
+let resetElem = document.querySelectorAll('.js-delete');
 const imgTemporary = 'https://via.placeholder.com/210x295/ffffff/666666/';
 let seriesResult = [];
 let favouriteSeries = [];
@@ -88,7 +89,9 @@ function renderFavouritesSection() {
   let i;
   let favCard;
   favSection.innerHTML = ''; //hay que dejarlo para poder borrar el array entero clickando
-
+  if (favouriteSeries !== []) {
+    btnReset.classList.remove('hidden');
+  } //ESTA CONDICIONAL NO ESTA FUNCIONANDO
   for (i = 0; i < favouriteSeries.length; i++) {
     if (favouriteSeries[i].show.image === null) {
       favCard = imgTemporary;
@@ -98,10 +101,10 @@ function renderFavouritesSection() {
     seriesFav += `<li class="js-serieFavCard" id="${favouriteSeries[i].show.id}">`;
     seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
     seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
-    seriesFav += `<button type="button" class="js-reset resetButton"> ❌ </button></li>`;
+    seriesFav += `<button type="button" class="js-delete resetButton"> ❌ </button></li>`;
     favSection.innerHTML = seriesFav;
   }
-  // addListenersReset();
+  listenResetBtn();
 }
 
 // *************************  FUNCIONES DE RESETEO **********************
@@ -112,7 +115,7 @@ const resetAll = () => {
   favouriteSeries = [];
   updateLocalStorage();
   renderFavouritesSection();
-  const searchedElem = document.querySelectorAll('.js-serieCard'); // me quita el color de los favoritos cuando reseteo //cuando recargo no puedo hacer que aparezcan con esecolor
+  const searchedElem = document.querySelectorAll('.js-serieCard'); // me quita el color de los favoritos cuando reseteo
   for (const shearched of searchedElem) {
     shearched.classList.remove('favelement');
   }
@@ -120,24 +123,29 @@ const resetAll = () => {
 
 //ELIMINA UN ELEMENTO
 
-//PRUEBA 2 - he probado poniendo span en lugar de button
-// const spanFav = document.querySelectorAll('span');
-// for (const span of spanFav) {
-//   span.addEventListener('click', function (ev) {
-//     li.parentNode.removeChild(li);
-//   });
-// }
-
-//PRUEBA 1
-// function resetOneFav(ev) {
-//   console.log('he clicado en....', ev.currentTarget);
-// } //no funciona
+const resetOneFav = (ev) => {
+  console.log(ev.target);
+  const buttonClickedId = parseInt(ev.currentTarget.id);
+  const serieFavouriteIndex = favouriteSeries.findIndex(
+    (favourite) => favourite.id === buttonClickedId
+  );
+  favouriteSeries.splice(serieFavouriteIndex, 1);
+  updateLocalStorage();
+  renderFavouritesSection();
+  console.log('el clickado', ev.currentTarget);
+  console.log('el padre del clickado', ev.currentTarget.parentNode);
+  // const noMoreFav = favouriteSeries.findIndex(
+  //   (favourite) => favourite.id === resultSection.show.id
+  // );
+  // ev.currentTarget.parentNode.classList.remove('favelement');
+  //quiero hacer una funciona que diga que si el id del padre del elemnto clickado coincide con el id del elemento en el array de busquedas, entonces me quite la clase favelement del elemento del array de busqueda
+};
 
 // *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
 function updateLocalStorage() {
   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
 }
-//¡TRAER DEL LOCAL
+//TRAER DEL LOCAL
 
 const getFromLocalStorage = () => {
   const data = JSON.parse(localStorage.getItem('favouriteSeries'));
@@ -162,23 +170,18 @@ btn.addEventListener('click', getSeries);
 
 //BOTON ELIMINAR GENERAL
 
-const btnReset = document.querySelector('.js-reset-all');
-
 btnReset.addEventListener('click', resetAll);
 
 //BOTON ELIMINAR INDIVIDUAL
 
-function addListenersReset() {
-  resetElem.addEventListener('click', resetOneFav);
-}
-
-function resetOneFav() {
-  li.parentNode.removeChild(li);
-}
+const listenResetBtn = () => {
+  const resetButtons = document.querySelectorAll('.js-delete');
+  for (let resetButton of resetButtons) {
+    resetButton.addEventListener('click', resetOneFav);
+  }
+};
 
 // *************************  START APP ********************************
 
 getSeries();
 getFromLocalStorage();
-renderFavouritesSection();
-addListenersReset();
