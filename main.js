@@ -3,12 +3,12 @@
 //👉constantes que vamos a utilizar
 const input = document.querySelector('.js-input');
 const btn = document.querySelector('.js-button');
-const resultsectionp = document.querySelector('.js-resultSection-p');
-const resultsection = document.querySelector('.js-ul-result');
-const favsection = document.querySelector('.js-ul-fav');
-
+const resultSectionP = document.querySelector('.js-resultSection-p');
+const resultSection = document.querySelector('.js-ul-result');
+const favSection = document.querySelector('.js-ul-fav');
+let resetElem = document.querySelectorAll('.js-reset');
 const imgTemporary = 'https://via.placeholder.com/210x295/ffffff/666666/';
-let seriesresult = [];
+let seriesResult = [];
 let favouriteSeries = [];
 
 //👉************************ TRAIGO INFORMACIÓN DE LA API *************
@@ -17,7 +17,7 @@ function getSeries() {
   fetch(`http://api.tvmaze.com/search/shows?q=${searchinput}`)
     .then((response) => response.json())
     .then((data) => {
-      seriesresult = data;
+      seriesResult = data;
       renderSearch();
       addListeners();
     });
@@ -25,151 +25,144 @@ function getSeries() {
 
 //👉*************************  PINTO RESULTADO DE LA BUSQUEDA *************
 function renderSearch() {
-  resultsectionp.classList.add('hidden');
-  //seriesalreadysearched.push(seriesresult); // añado a la lista de buscados
-  let seriescard;
-  resultsection.innerHTML = '';
+  resultSectionP.classList.add('hidden');
+  let seriesCard;
+  resultSection.innerHTML = '';
   let i;
-  let imagecard;
+  let imageCard;
 
-  for (i = 0; i < seriesresult.length; i++) {
-    if (seriesresult[i].show.image === null) {
-      imagecard = imgTemporary; //revisar esta parte
+  for (i = 0; i < seriesResult.length; i++) {
+    if (seriesResult[i].show.image === null) {
+      imageCard = imgTemporary;
     } else {
-      imagecard = seriesresult[i].show.image.medium;
+      imageCard = seriesResult[i].show.image.medium;
     }
-    seriescard = `<li class="seriecard" id="${seriesresult[i].show.id}">`;
-    seriescard += `<img src="${imagecard}" alt="Foto de ${seriesresult[i].show.name}">`;
-    seriescard += `<h3>${seriesresult[i].show.name}</h3></li>`;
-    resultsection.innerHTML += seriescard;
+    seriesCard = `<li class="js-serieCard" id="${seriesResult[i].show.id}">`;
+    seriesCard += `<img src="${imageCard}" alt="Foto de ${seriesResult[i].show.name}">`;
+    seriesCard += `<h3>${seriesResult[i].show.name}</h3></li>`;
+    resultSection.innerHTML += seriesCard;
   }
 }
-
-//👉*************************  AÑADIR SERIES A SU ARRAY *************
-
-//👉 cuando hago clic sobre la tarjeta,
+//👉*************************  FAVOURITE HANDLER *******
 // // -añadir a array favouriteSeries         addToFavouritesArray
-// // -pintar dicho array en la sección     addToFavouritesSection
+// // -pintar dicho array en la sección     renderFavouritesSection
 // // - intercambiar color fuente y fondo          changeColor
 // // - guardar en local
-
 function favouritesHandler(ev) {
-  const clickedcard = ev.currentTarget;
+  const clickedCard = ev.currentTarget;
   console.log('elemento clicado', ev.currentTarget);
   addToFavouritesArray(ev);
-  addToFavouritesSection(ev);
-  saveIntoLocal();
-  updateLocalStorage();
-}
-
-function addToFavouritesArray(ev) {
-  //console.log('series result', seriesresult);
-  const clickedcard = ev.currentTarget;
-  const clickedcardname = clickedcard.querySelector('h3').innerHTML;
-  console.log('array de favoritos', favouriteSeries);
-  //console.log('ev.currentTarget', clickedcard);
-  console.log('el id del clickedcard', clickedcard.id);
-
-  //si hay algun elemento cuyo id sea igual que el del elemento clickado, devuelveme su index
-  const favElemIndex = favouriteSeries.findIndex(
-    (elem) => elem.show.name === clickedcardname
-  );
-  console.log(favElemIndex);
-
-  //los que tengan index -1, buscame en el resultado de la busqueda el que coincida el id y me lo subes a favourites
-  if (favElemIndex === -1) {
-    clickedcard.classList.add('favelement');
-    const favElemnt = seriesresult.find(
-      (serie) => serie.show.name === clickedcardname
-    );
-    favouriteSeries.push(favElemnt);
-    console.log('elemento favorito', favElemnt);
-  } else {
-    clickedcard.classList.remove('favelement');
-    favouriteSeries.splice(favElemIndex, 1);
-  }
-}
-
-//👉*************************  AÑADIR FAVORITOS A SU SECCIÓN. PINTAR **************************
-function addToFavouritesSection() {
-  let seriesfav;
-  let i;
-  let imagecard;
-
-  for (i = 0; i < favouriteSeries.length; i++) {
-    if (favouriteSeries[i].show.image === null) {
-      imagecard = imgTemporary; //revisar esta parte
-    } else {
-      imagecard = favouriteSeries[i].show.image.medium;
-    }
-    seriesfav =
-      seriesfav +
-      `<li class="seriefavcard" id="${favouriteSeries[i].show.id}"><img src="${imagecard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
-    seriesfav += `<h3>${favouriteSeries[i].show.name}</h3>`;
-    seriesfav += `<button type="input" class="js-reset"> 🗑️ </button></li>`;
-  }
-  favsection.innerHTML =
-    seriesfav +
-    `<button type="input" class="js-reset-all"> 🗑️Eliminar todos🗑️ </button></li>`;
+  renderFavouritesSection(ev);
   // updateLocalStorage();
 }
 
-// *************************  FUNCIONES PARA RESETEAR ********************************
-
-function resetOneFav() {
-  favouriteSeries.splice(favElemIndex, 1);
+function addToFavouritesArray(ev) {
+  const clickedCard = ev.currentTarget;
+  const clickedCardName = clickedCard.querySelector('h3').innerHTML;
+  console.log(clickedCardName);
+  //si hay algun elemento cuyo id sea igual que el del elemento clickado, devuelveme su index
+  const favElemIndex = favouriteSeries.findIndex(
+    (elem) => elem.show.name === clickedCardName
+  );
+  console.log(clickedCard);
+  //los que tengan index -1, buscame en el resultado de la busqueda el que coincida el name? y me lo subes a favourites
+  if (favElemIndex === -1) {
+    clickedCard.classList.add('favelement');
+    const favElemnt = seriesResult.find(
+      (serie) => serie.show.name === clickedCardName
+    );
+    favouriteSeries.push(favElemnt);
+    console.log('elemento favorito recien añadido', favElemnt);
+  } else {
+    clickedCard.classList.remove('favelement');
+    favouriteSeries.splice(favElemIndex, 1);
+  }
+  console.log('array de favoritos', favouriteSeries);
+  // console.log('el id del clickedCard elemento clickado es ', clickedCard.id);
   updateLocalStorage();
 }
 
-const resetAll = document.querySelector('.js-reset-all');
+//👉*************************  PINTAR FAVORITOS EN SU SECCIÓN.  **************************
+function renderFavouritesSection() {
+  let seriesFav = ''; //hay que ponerlo ='' para que no salga undefined siempre
+  let i;
+  let favCard;
+  favSection.innerHTML = ''; //hay que dejarlo para poder borrar el array entero clickando
 
-function resetFavourites() {
+  for (i = 0; i < favouriteSeries.length; i++) {
+    if (favouriteSeries[i].show.image === null) {
+      favCard = imgTemporary;
+    } else {
+      favCard = favouriteSeries[i].show.image.medium;
+    }
+    seriesFav += `<li class="js-serieFavCard" id="${favouriteSeries[i].show.id}">`;
+    seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
+    seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
+    seriesFav += `<button type="input" class="js-reset"> 🗑️ </button></li>`;
+    favSection.innerHTML = seriesFav;
+  }
+  addListenersReset();
+}
+
+// *************************  FUNCIONES DE RESETEO **********************
+
+//ELIMINA TOODS
+const resetAll = () => {
+  localStorage.removeItem('favouriteSeries');
   favouriteSeries = [];
-  addToFavouritesSection();
-  saveIntoLocal();
-  // favsection.innerHTML = '';
-  console.log(favouriteSeries);
+  updateLocalStorage();
+  renderFavouritesSection();
+};
+
+//ELIMINA UN ELEMENTO
+function resetOneFav(ev) {
+  console.log('he clicado en....', ev.currentTarget);
 }
 
 // *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
-function saveIntoLocal() {
+function updateLocalStorage() {
   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
 }
-//FALTA TRAER DEL LOCAL
+//¡TRAER DEL LOCAL
 
 const getFromLocalStorage = () => {
   const data = JSON.parse(localStorage.getItem('favouriteSeries'));
   if (data !== null) {
     favouriteSeries = data;
   }
+  renderFavouritesSection(); //vuelve a pintarlos al recargar
+  //array de elemento escuchadores botones favoritos
 };
 
-// *************************  LISTENERS ********************************
-
-// 👉  Creamos una funcion para que me escuchen las tarjetas al hacer click
-
+// *************************  EVENTO ESCUCHADOR ********************************
+//TARJETAS DE RESULTADO ESCUCHADORAS
 function addListeners() {
-  let liElem = document.querySelectorAll('.seriecard');
+  let liElem = document.querySelectorAll('.js-serieCard');
   for (const li of liElem) {
     li.addEventListener('click', favouritesHandler);
   }
 }
 
-function addListenersReset() {
-  let resetElem = document.querySelectorAll('.js-reset');
-  for (const reset of resetElem) {
-    reset.addEventListener('click', resetOneFav);
-  }
-}
-
-// *************************  RESET *******************************
-
+//BOTON DE BUSQUEDA
 btn.addEventListener('click', getSeries);
 
-resetAll.addEventListener('click', resetFavourites);
+//BOTON ELIMINAR GENERAL
+
+const btnReset = document.querySelector('.js-reset-all');
+
+btnReset.addEventListener('click', resetAll);
+
+//BOTON ELIMINAR INDIVIDUAL
+
+function addListenersReset() {
+  for (const resetButton of resetElem) {
+    resetButton.addEventListener('click', resetOneFav);
+  }
+}
 
 // *************************  START APP ********************************
 
 getSeries();
 getFromLocalStorage();
-addToFavouritesSection();
+renderFavouritesSection();
+addListenersReset();

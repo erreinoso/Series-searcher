@@ -26,8 +26,8 @@ h2 {
   background-color: lightyellow;
   border-radius: 12px;
 }
-.seriecard,
-.seriefavcard {
+.js-serieCard,
+.js-serieFavCard {
   border: 1px solid black;
   border-radius: 12px;
   display: inline-block;
@@ -58,6 +58,7 @@ h2 {
 
 img {
   height: 150px;
+  border-radius: 12px;
 }
 
 .hidden {
