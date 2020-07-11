@@ -67,10 +67,10 @@ function addToFavouritesArray(ev) {
   console.log(clickedCard);
   //los que tengan index -1, buscame en el resultado de la busqueda el que coincida el name? y me lo subes a favourites
   if (favElemIndex === -1) {
-    clickedCard.classList.add('favelement');
     const favElemnt = seriesResult.find(
       (serie) => serie.show.name === clickedCardName
     );
+    clickedCard.classList.add('favelement');
     favouriteSeries.push(favElemnt);
     console.log('elemento favorito recien añadido', favElemnt);
   } else {
@@ -98,10 +98,10 @@ function renderFavouritesSection() {
     seriesFav += `<li class="js-serieFavCard" id="${favouriteSeries[i].show.id}">`;
     seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
     seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
-    seriesFav += `<button type="input" class="js-reset"> 🗑️ </button></li>`;
+    seriesFav += `<button type="button" class="js-reset resetButton"> ❌ </button></li>`;
     favSection.innerHTML = seriesFav;
   }
-  addListenersReset();
+  // addListenersReset();
 }
 
 // *************************  FUNCIONES DE RESETEO **********************
@@ -112,12 +112,26 @@ const resetAll = () => {
   favouriteSeries = [];
   updateLocalStorage();
   renderFavouritesSection();
+  const searchedElem = document.querySelectorAll('.js-serieCard'); // me quita el color de los favoritos cuando reseteo //cuando recargo no puedo hacer que aparezcan con esecolor
+  for (const shearched of searchedElem) {
+    shearched.classList.remove('favelement');
+  }
 };
 
 //ELIMINA UN ELEMENTO
-function resetOneFav(ev) {
-  console.log('he clicado en....', ev.currentTarget);
-}
+
+//PRUEBA 2 - he probado poniendo span en lugar de button
+// const spanFav = document.querySelectorAll('span');
+// for (const span of spanFav) {
+//   span.addEventListener('click', function (ev) {
+//     li.parentNode.removeChild(li);
+//   });
+// }
+
+//PRUEBA 1
+// function resetOneFav(ev) {
+//   console.log('he clicado en....', ev.currentTarget);
+// } //no funciona
 
 // *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
 function updateLocalStorage() {
@@ -155,9 +169,11 @@ btnReset.addEventListener('click', resetAll);
 //BOTON ELIMINAR INDIVIDUAL
 
 function addListenersReset() {
-  for (const resetButton of resetElem) {
-    resetButton.addEventListener('click', resetOneFav);
-  }
+  resetElem.addEventListener('click', resetOneFav);
+}
+
+function resetOneFav() {
+  li.parentNode.removeChild(li);
 }
 
 // *************************  START APP ********************************

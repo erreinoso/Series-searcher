@@ -23,7 +23,7 @@ h2 {
   width: 60%;
   height: 100vw;
   padding: 20px;
-  background-color: lightyellow;
+  background-color: lightgreen;
   border-radius: 12px;
 }
 .js-serieCard,
@@ -33,6 +33,7 @@ h2 {
   display: inline-block;
   justify-content: center;
   align-items: center;
+  align-content: center;
   padding: 10px;
   background-color: rgb(243, 199, 199);
 }
@@ -45,7 +46,7 @@ h2 {
   color: white;
   font-weight: bold;
   background-color: grey;
-  color: coral;
+  color: rgb(243, 199, 199);
 }
 
 .button {
@@ -59,8 +60,13 @@ h2 {
 img {
   height: 150px;
   border-radius: 12px;
+  align-self: center;
 }
 
 .hidden {
   display: none;
+}
+
+.resetButton {
+  padding: 5px;
 }
