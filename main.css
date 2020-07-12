@@ -8,7 +8,7 @@
   border: 15px solid grey;
   margin: 50px;
   width: 90%;
-  height: 500px;
+  height: 550px;
 }
 .header {
   display: flex;
@@ -103,7 +103,7 @@ ul {
 
 .button {
   color: white;
-  background-color: rgb(37, 136, 153);
+  background-color: rgb(173, 17, 140);
   border-radius: 12px;
   font-weight: bold;
   padding: 5px;
@@ -114,10 +114,6 @@ img {
   height: 70px;
   border-radius: 12px;
   align-self: center;
-}
-
-.hidden {
-  display: none;
 }
 
 .resetButton {
@@ -132,4 +128,8 @@ img {
   border-color: lightgray;
   background-color: white;
   height: 40px;
+}
+
+.hidden {
+  display: none;
 }

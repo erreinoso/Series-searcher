@@ -26,7 +26,6 @@ function getSeries() {
 
 //👉*************************  PINTO RESULTADO DE LA BUSQUEDA *************
 function renderSearch() {
-  // resultSectionP.classList.add('hidden'); funciona antes de tiempo
   let seriesCard;
   resultSection.innerHTML = '';
   let i;
@@ -43,6 +42,10 @@ function renderSearch() {
     seriesCard += `<h3>${seriesResult[i].show.name}</h3></li>`;
     resultSection.innerHTML += seriesCard;
   }
+  if (seriesResult !== []) {
+    // funciona antes de tiempo
+    resultSectionP.classList.add('hidden');
+  }
 }
 //👉*************************  FAVOURITE HANDLER *******
 // // -añadir a array favouriteSeries         addToFavouritesArray
@@ -54,18 +57,15 @@ function favouritesHandler(ev) {
   console.log('elemento clicado', ev.currentTarget);
   addToFavouritesArray(ev);
   renderFavouritesSection(ev);
-  // updateLocalStorage();
 }
 
 function addToFavouritesArray(ev) {
   const clickedCard = ev.currentTarget;
   const clickedCardName = clickedCard.querySelector('h3').innerHTML;
-  console.log(clickedCardName);
   //si hay algun elemento cuyo id sea igual que el del elemento clickado, devuelveme su index
   const favElemIndex = favouriteSeries.findIndex(
     (elem) => elem.show.name === clickedCardName
   );
-  console.log(clickedCard);
   //los que tengan index -1, buscame en el resultado de la busqueda el que coincida el name? y me lo subes a favourites
   if (favElemIndex === -1) {
     const favElemnt = seriesResult.find(
@@ -79,7 +79,9 @@ function addToFavouritesArray(ev) {
     favouriteSeries.splice(favElemIndex, 1);
   }
   console.log('array de favoritos', favouriteSeries);
-  // console.log('el id del clickedCard elemento clickado es ', clickedCard.id);
+  console.log('nombre del elemento clickado', clickedCardName);
+  console.log('el index del elemento clickado es', favElemIndex);
+  console.log('elemento clickado', clickedCard);
   updateLocalStorage();
 }
 
@@ -91,7 +93,7 @@ function renderFavouritesSection() {
   favSection.innerHTML = ''; //hay que dejarlo para poder borrar el array entero clickando
   if (favouriteSeries !== []) {
     btnReset.classList.remove('hidden');
-  } //ESTA CONDICIONAL NO ESTA FUNCIONANDO
+  } //ESTA CONDICIONAL NO ESTA FUNCIONANDO, o esta funcionando antes de tiempo
   for (i = 0; i < favouriteSeries.length; i++) {
     if (favouriteSeries[i].show.image === null) {
       favCard = imgTemporary;
@@ -124,21 +126,33 @@ const resetAll = () => {
 //ELIMINA UN ELEMENTO
 
 const resetOneFav = (ev) => {
-  console.log(ev.target);
   const buttonClickedId = parseInt(ev.currentTarget.id);
   const serieFavouriteIndex = favouriteSeries.findIndex(
     (favourite) => favourite.id === buttonClickedId
   );
+  const parentOfSelectedId = ev.currentTarget.parentNode.id;
+
   favouriteSeries.splice(serieFavouriteIndex, 1);
   updateLocalStorage();
   renderFavouritesSection();
-  console.log('el clickado', ev.currentTarget);
-  console.log('el padre del clickado', ev.currentTarget.parentNode);
-  // const noMoreFav = favouriteSeries.findIndex(
-  //   (favourite) => favourite.id === resultSection.show.id
+  //renderSearch(); si pongo esto me quita el formato pero de todos
+
+  console.log('el seleccionado para borrarlo es ', ev.currentTarget);
+  console.log(
+    'el padre del clickado para ser borrado es ',
+    ev.currentTarget.parentNode
+  );
+  console.log('el id del padre del seleccionado', parentOfSelectedId);
+
+  // let noMoreFav = seriesResult.find(
+  //   (serie) => serie.show.id === parentOfSelectedId
   // );
-  // ev.currentTarget.parentNode.classList.remove('favelement');
-  //quiero hacer una funciona que diga que si el id del padre del elemnto clickado coincide con el id del elemento en el array de busquedas, entonces me quite la clase favelement del elemento del array de busqueda
+  // for (const serie of seriesResult) {
+  //   if (serie.show.id === parentOfSelectedId) {
+  //     serie.classList.remove('favelement');
+  //  }
+  // }
+  //quiero hacer una funcion que diga que si el id del padre del elemnto clickado coincide con el id del elemento en el array de busquedas, entonces me quite la clase favelement del elemento del array de busqueda. hay que recorrer dos arrays
 };
 
 // *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
