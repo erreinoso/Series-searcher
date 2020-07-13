@@ -31,26 +31,27 @@ function renderSearch() {
   let i;
   let imageCard;
 
-  for (i = 0; i < seriesResult.length; i++) {
-    if (seriesResult[i].show.image === null) {
-      imageCard = imgTemporary;
-    } else {
-      imageCard = seriesResult[i].show.image.medium;
-    }
-    seriesCard = `<li class="js-serieCard serieCard" id="${seriesResult[i].show.id}">`;
-    seriesCard += `<img src="${imageCard}" alt="Foto de ${seriesResult[i].show.name}">`;
-    seriesCard += `<h3>${seriesResult[i].show.name}</h3></li>`;
-    resultSection.innerHTML += seriesCard;
-  }
-  if (seriesResult !== []) {
-    // funciona antes de tiempo
+  if (seriesResult.length === 0) {
+    resultSectionP.classList.remove('hidden');
+  } else {
     resultSectionP.classList.add('hidden');
+    for (i = 0; i < seriesResult.length; i++) {
+      if (seriesResult[i].show.image === null) {
+        imageCard = imgTemporary;
+      } else {
+        imageCard = seriesResult[i].show.image.medium;
+      }
+      seriesCard = `<li class="js-serieCard serieCard" id="${seriesResult[i].show.id}">`;
+      seriesCard += `<img src="${imageCard}" alt="Foto de ${seriesResult[i].show.name}">`;
+      seriesCard += `<h3>${seriesResult[i].show.name}</h3></li>`;
+      resultSection.innerHTML += seriesCard;
+    }
   }
 }
 //👉*************************  FAVOURITE HANDLER *******
 // // -añadir a array favouriteSeries         addToFavouritesArray
 // // -pintar dicho array en la sección     renderFavouritesSection
-// // - intercambiar color fuente y fondo          changeColor
+// // - intercambiar color fuente y fondo
 // // - guardar en local
 function favouritesHandler(ev) {
   const clickedCard = ev.currentTarget;
@@ -67,6 +68,7 @@ function addToFavouritesArray(ev) {
     (elem) => elem.show.name === clickedCardName
   );
   //los que tengan index -1, buscame en el resultado de la busqueda el que coincida el name? y me lo subes a favourites
+
   if (favElemIndex === -1) {
     const favElemnt = seriesResult.find(
       (serie) => serie.show.name === clickedCardName
@@ -91,22 +93,24 @@ function renderFavouritesSection() {
   let i;
   let favCard;
   favSection.innerHTML = ''; //hay que dejarlo para poder borrar el array entero clickando
-  if (favouriteSeries !== []) {
+  if (favouriteSeries.length === 0) {
+    btnReset.classList.add('hidden');
+  } else {
     btnReset.classList.remove('hidden');
-  } //ESTA CONDICIONAL NO ESTA FUNCIONANDO, o esta funcionando antes de tiempo
-  for (i = 0; i < favouriteSeries.length; i++) {
-    if (favouriteSeries[i].show.image === null) {
-      favCard = imgTemporary;
-    } else {
-      favCard = favouriteSeries[i].show.image.medium;
+    for (i = 0; i < favouriteSeries.length; i++) {
+      if (favouriteSeries[i].show.image === null) {
+        favCard = imgTemporary;
+      } else {
+        favCard = favouriteSeries[i].show.image.medium;
+      }
+      seriesFav += `<li class="js-serieFavCard serieFavCard" id="${favouriteSeries[i].show.id}">`;
+      seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
+      seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
+      seriesFav += `<button type="button" class="js-delete resetButton"> ❌ </button></li>`;
+      favSection.innerHTML = seriesFav;
     }
-    seriesFav += `<li class="js-serieFavCard serieFavCard" id="${favouriteSeries[i].show.id}">`;
-    seriesFav += `<img src="${favCard}" alt="Foto de ${favouriteSeries[i].show.name}">`;
-    seriesFav += `<h3>${favouriteSeries[i].show.name}</h3>`;
-    seriesFav += `<button type="button" class="js-delete resetButton"> ❌ </button></li>`;
-    favSection.innerHTML = seriesFav;
+    listenResetBtn();
   }
-  listenResetBtn();
 }
 
 // *************************  FUNCIONES DE RESETEO **********************
@@ -124,6 +128,8 @@ const resetAll = () => {
 };
 
 //ELIMINA UN ELEMENTO
+
+const resultsWrapper = document.querySelector('.js-ul-result');
 
 const resetOneFav = (ev) => {
   const buttonClickedId = parseInt(ev.currentTarget.id);
@@ -144,15 +150,15 @@ const resetOneFav = (ev) => {
   );
   console.log('el id del padre del seleccionado', parentOfSelectedId);
 
-  // let noMoreFav = seriesResult.find(
-  //   (serie) => serie.show.id === parentOfSelectedId
-  // );
-  // for (const serie of seriesResult) {
-  //   if (serie.show.id === parentOfSelectedId) {
-  //     serie.classList.remove('favelement');
-  //  }
-  // }
-  //quiero hacer una funcion que diga que si el id del padre del elemnto clickado coincide con el id del elemento en el array de busquedas, entonces me quite la clase favelement del elemento del array de busqueda. hay que recorrer dos arrays
+  const resultList = resultsWrapper.querySelectorAll('li');
+  console.log(parentOfSelectedId);
+
+  for (const li of resultList) {
+    if (li.id === parentOfSelectedId) {
+      console.log('muy bien, coincide');
+      li.classList.remove('favelement');
+    }
+  }
 };
 
 // *************************  GUARDAR EN LOCAL  y TRAER DEL LOCAL    ********************************
