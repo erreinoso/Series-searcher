@@ -1,12 +1,11 @@
 'use strict';
 
-//👉constantes que vamos a utilizar
 const input = document.querySelector('.js-input');
 const btn = document.querySelector('.js-button');
 const resultSectionP = document.querySelector('.js-resultSection-p');
 const favSection = document.querySelector('.js-ul-fav');
 const btnReset = document.querySelector('.js-reset-all');
-let resetElem = document.querySelectorAll('.js-delete');
+const resetElem = document.querySelectorAll('.js-delete');
 const imgTemporary = 'https://via.placeholder.com/210x295/ffffff/666666/';
 const resultsWrapper = document.querySelector('.js-ul-result');
 let seriesResult = [];
@@ -25,7 +24,7 @@ function getSeries() {
     });
 }
 
-//Update class style to element searched - not working
+//Update class style to element searched
 function checkFavorites() {
   const liResult = resultsWrapper.querySelectorAll('li');
   for (const li of liResult) {
@@ -119,7 +118,7 @@ function renderFavouriteSection() {
   }
 }
 
-// Reset function
+// Reset functions
 
 // Reset all favourite elements
 const resetAll = () => {
@@ -152,6 +151,7 @@ const resetOneFav = (ev) => {
   }
 };
 
+//Local Storage
 // Save in Local Storage
 function updateLocalStorage() {
   localStorage.setItem('favouriteSeries', JSON.stringify(favouriteSeries));
