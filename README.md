@@ -1,6 +1,7 @@
 # modulo-2-evaluacion-final-erreinoso
 
 ¡Bienvenido/a!
-Para este proyecto no he utilizado el starter kit de Adalab. Podrás encontrar el resultado en el enlace de github pages publicado.
+Aquí puedes ver mi aplicación web para buscar series y guardarlas como series favoritas. Realizada con HTML, SASS y JAVASCRIPT.
+Podrás encontrar el resultado en el enlace de github pages publicado.
 
 ¡Espero que te guste!
