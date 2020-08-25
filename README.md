@@ -8,7 +8,7 @@ The user's favourite shows had to be locally stored so they would remain in the 
 
 **- Requirements**
 
-- This project we are asked to make a call to [an API] (http://api.tvmaze.com/), where we can get data from all available TV series.
+- This project we are asked to make a call to [an API](http://api.tvmaze.com/), where we can get data from all available TV series.
 
 - After getting all the series stored, we can search for the one we want and add it to a list of favorites.
 
